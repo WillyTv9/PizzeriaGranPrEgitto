@@ -4,6 +4,6 @@
 bissa margherita, bissa salame, biccanti ? 
 fette interi?
 
-Ursa - bevande
-ohLo - Dolci
-TheShark - Pizze
+- Ursa - bevande
+- ohLo - Dolci
+- TheShark - Pizze
