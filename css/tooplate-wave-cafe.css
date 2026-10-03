@@ -1,12 +1,35 @@
 /*
 
-Tooplate 2121 Wave Cafe
-
-https://www.tooplate.com/view/2121-wave-cafe
+Pizzeria Gran Piramide d'Egitto
+Base: Tooplate 2121 Wave Cafe (https://www.tooplate.com/view/2121-wave-cafe)
+Tema: sabbia, oro e lapislazzuli. Layout invariato, cambiati solo colori ed effetti.
 
 */
 
-html { scroll-behavior: smooth; }
+/* ---------- Palette ---------- */
+:root {
+    --notte:      #2B1A0C; /* notte nel deserto (sfondi scuri) */
+    --papiro:     #F6E8C3; /* testo chiaro */
+    --sabbia:     #F0DDAA; /* superfici chiare */
+    --arenaria:   #C9A25F; /* bordi e dettagli */
+    --oro:        #D9A92F;
+    --oro-chiaro: #FFD36B; /* prezzi, hover */
+    --lapis:      #1F4E8C; /* stato attivo */
+    --bronzo:     #7A431B; /* testo su sabbia */
+
+    /* grana di sabbia generata in SVG, nessun file in più */
+    --grana: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .38  0 0 0 0 .16  0 0 0 .35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-color: var(--arenaria) var(--notte);
+}
+
+::selection {
+    background: var(--oro);
+    color: var(--notte);
+}
 
 body {
     margin: 0;
@@ -14,7 +37,22 @@ body {
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
     font-size: 18px;
     overflow-x: hidden;
-    background-color: #1E5050;
+    background-color: var(--notte);
+}
+
+/* Velo color deserto sopra il video, dietro ai contenuti */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -999;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 214, 140, 0.15), transparent 60%),
+        linear-gradient(180deg, rgba(233, 196, 120, 0.10), rgba(110, 62, 22, 0.28));
 }
 
 ul {
@@ -24,24 +62,33 @@ ul {
 
 nav > ul > li { list-style: none; }
 
-a { 
-	color: #3CF;
+a {
+    color: var(--oro-chiaro);
     text-decoration: none;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
 }
 
-p { 
-    line-height: 1.8; 
+a:focus-visible,
+button:focus-visible,
+.tm-form-control:focus-visible {
+    outline: 2px solid var(--oro-chiaro);
+    outline-offset: 2px;
+}
+
+p {
+    line-height: 1.8;
     margin-top: 0;
 }
 
 h2 { margin-top: 0; }
 
+/* ---------- Video di sfondo (virato color sabbia) ---------- */
 #tm-video {
     position: fixed;
     right: 0;
-    bottom: 0;    
+    bottom: 0;
     z-index: -1000;
+    filter: sepia(0.35) saturate(1.1) brightness(0.85);
 }
 
 .tm-video-wrapper { position: relative; }
@@ -52,9 +99,16 @@ h2 { margin-top: 0; }
     bottom: 30px;
     right: 30px;
     z-index: 1000;
-    background-color: rgba(0,0,0,0.5);
-    color: white;    
+    background-color: rgba(43, 26, 12, 0.7);
+    color: var(--oro-chiaro);
     padding: 10px;
+    box-shadow: inset 0 0 0 1px var(--oro);
+    transition: all 0.3s ease;
+}
+
+#tm-video-control-button:hover {
+    background-color: var(--oro);
+    color: var(--notte);
 }
 
 .tm-container { padding: 30px; }
@@ -69,30 +123,44 @@ h2 { margin-top: 0; }
     width: 50%;
 }
 
-.tm-left-inner { position: fixed; }
-
-.tm-site-header {
-    background-color: white;
-    color: #099;
-    width: 100%;
-    height: 160px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;   
-}
-
-.tm-site-logo { margin-right: 30px; }
-
-.tm-site-name {
-    font-size: 2.2rem;
-    font-style: italic;    
-}
-
 .tm-left-inner {
+    position: fixed;
     max-width: 500px;
     width: 100%;
 }
 
+/* ---------- Intestazione ---------- */
+.tm-site-header {
+    background-color: var(--sabbia);
+    background-image: var(--grana);
+    color: var(--bronzo);
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* cornice dorata + fascia lapislazzuli in basso (inset: non occupa spazio) */
+    box-shadow:
+        inset 0 0 0 3px var(--oro),
+        inset 0 0 0 6px var(--sabbia),
+        inset 0 0 0 7px var(--bronzo),
+        inset 0 -16px 0 -7px var(--lapis),
+        0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.tm-site-logo {
+    margin-right: 30px;
+    color: var(--oro);
+    filter: drop-shadow(0 2px 2px rgba(122, 67, 27, 0.5));
+}
+
+.tm-site-name {
+    font-size: 2.2rem;
+    font-style: italic;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6), 2px 3px 4px rgba(122, 67, 27, 0.35);
+}
+
+/* ---------- Navigazione ---------- */
 .tm-site-nav-ul {
     display: flex;
     flex-wrap: wrap;
@@ -104,18 +172,30 @@ h2 { margin-top: 0; }
 .tm-page-link {
     min-width: 240px;
     height: 100px;
-    background-color: white;
-    color: #099;
+    background-color: var(--sabbia);
+    background-image: var(--grana);
+    color: var(--bronzo);
     display: flex;
     text-decoration: none;
-    align-items: center;      
+    align-items: center;
     font-size: 1.2rem;
+    box-shadow:
+        inset 0 0 0 2px var(--oro),
+        inset 0 0 0 4px var(--sabbia),
+        inset 0 0 0 5px var(--arenaria),
+        0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
 .tm-page-link:hover,
 .tm-page-link.active {
-    background-color: #099;
-    color: white;
+    background-color: var(--lapis);
+    background-image: var(--grana);
+    color: var(--papiro);
+    box-shadow:
+        inset 0 0 0 2px var(--oro-chiaro),
+        inset 0 0 0 4px var(--lapis),
+        inset 0 0 0 5px var(--oro),
+        0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
 .tm-page-link-icon {
@@ -124,19 +204,24 @@ h2 { margin-top: 0; }
     font-size: 1.5rem;
 }
 
+/* ---------- Pannelli scuri (arenaria bruciata) ---------- */
 .tm-black-bg {
-    background-color: rgba(0,0,0,0.6);
-    color: white;
+    background-color: rgba(43, 26, 12, 0.74);
+    background-image: var(--grana);
+    color: var(--papiro);
+    box-shadow: inset 0 0 0 1px rgba(217, 169, 47, 0.55);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
 }
 
 .tm-drinks-nav > ul > li { display: inline-block; }
 
 .tm-drinks-nav > ul > li > a {
-    color: white;
+    color: var(--papiro);
     font-size: 1.2rem;
     padding-top: 15px;
     padding-bottom: 5px;
-    border-bottom: 3px solid transparent;
+    border-bottom: 4px solid transparent; /* era 3px: faceva "saltare" il menu all'hover */
 }
 
 .tm-drinks-nav { height: 80px; }
@@ -151,10 +236,12 @@ h2 { margin-top: 0; }
 
 .tm-drinks-nav > ul > li a.active,
 .tm-drinks-nav > ul > li a:hover {
-    color: #96FEFF;
-    border-bottom: 4px solid #96FEFF;
+    color: var(--oro-chiaro);
+    border-bottom: 4px solid var(--oro-chiaro);
+    text-shadow: 0 0 10px rgba(255, 211, 107, 0.55);
 }
 
+/* ---------- Elenco piatti ---------- */
 .tm-list-item {
     display: flex;
     align-items: center;
@@ -168,7 +255,12 @@ h2 { margin-top: 0; }
     margin-right: 20px;
     width: 160px;
     height: 160px;
-    background-color: #099;
+    flex-shrink: 0;      /* l'immagine non si schiaccia più con testi lunghi */
+    object-fit: cover;   /* niente foto deformate */
+    background-color: var(--arenaria);
+    box-shadow: 0 0 0 3px var(--oro), 0 6px 14px rgba(0, 0, 0, 0.5);
+    filter: sepia(0.25) saturate(1.1);
+    transition: filter 0.4s ease, box-shadow 0.4s ease;
 }
 
 .tm-list-item-img-big {
@@ -177,9 +269,19 @@ h2 { margin-top: 0; }
     height: 200px;
 }
 
+.tm-list-item:hover .tm-list-item-img {
+    filter: sepia(0) saturate(1.15) brightness(1.06);
+    box-shadow: 0 0 0 3px var(--oro-chiaro), 0 0 18px rgba(255, 211, 107, 0.55), 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.tm-list-item:hover .tm-list-item-text {
+    box-shadow: inset 0 0 0 1px var(--oro), inset 0 0 22px rgba(217, 169, 47, 0.18);
+}
+
 .tm-list-item-text {
     padding: 20px 25px;
     flex: 1;
+    transition: box-shadow 0.4s ease;
 }
 
 .tm-list-item-text-2 { flex: 1; }
@@ -190,7 +292,12 @@ h2 { margin-top: 0; }
     margin-top: 0;
 }
 
-.tm-list-item-price { color: #96FEFF; }
+.tm-list-item-price {
+    color: var(--oro-chiaro);
+    text-shadow: 0 0 8px rgba(255, 211, 107, 0.35);
+}
+
+/* ---------- Footer ---------- */
 .tm-site-footer { margin-top: 15px; }
 
 .tm-footer-text {
@@ -198,22 +305,33 @@ h2 { margin-top: 0; }
     display: inline-block;
 }
 
-.tm-footer-link { color: white; }
+.tm-footer-link { color: var(--papiro); }
+.tm-footer-link:hover { color: var(--oro-chiaro); }
+
+/* ---------- Animazioni ---------- */
 .tm-tab-content { animation: fadeEffect 1s; }
 .tm-page-content { animation: fadeEffect 1s; }
 
-.tm-text-primary { color: #3CC; }
-.tm-mb-20 { margin-bottom: 20px; }
-.tm-mb-30 { margin-bottom: 30px; }
-.tm-img-right { 
-    margin-left: 30px; 
-    margin-right: 0;
+/* Il contenuto "emerge dalla sabbia": nebbia color seppia che si dissolve */
+@keyframes fadeEffect {
+    from { opacity: 0.2; filter: blur(3px) sepia(1); }
+    to   { opacity: 1;   filter: blur(0) sepia(0); }
 }
 
-/* Go from zero to full opacity */
-@keyframes fadeEffect {
-    from { opacity: 0.3; }
-    to { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .tm-tab-content,
+    .tm-page-content { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+}
+
+/* ---------- Utility ---------- */
+.tm-text-primary { color: var(--oro); }
+.tm-mb-20 { margin-bottom: 20px; }
+.tm-mb-30 { margin-bottom: 30px; }
+.tm-img-right {
+    margin-left: 30px;
+    margin-right: 0;
 }
 
 /* About */
@@ -239,7 +357,7 @@ h2 { margin-top: 0; }
 /* Contact */
 .tm-contact-text-container {
     padding: 45px 50px;
-    margin-bottom: 20px;    
+    margin-bottom: 20px;
 }
 
 .tm-contact-form-container {
@@ -255,33 +373,43 @@ h2 { margin-top: 0; }
     box-sizing: border-box;
     width: 100%;
     padding: 15px;
-	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
-    color: #fff;
+    color: var(--papiro);
     background-color: transparent;
     background-clip: padding-box;
     border: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--arenaria);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.tm-form-control::-webkit-input-placeholder { color: white; } /* Edge */  
-.tm-form-control:-ms-input-placeholder { color: white; } /* Internet Explorer 10-11 */  
-.tm-form-control::placeholder { color: white; }
+.tm-form-control:focus {
+    border-bottom-color: var(--oro-chiaro);
+    box-shadow: 0 6px 12px -8px var(--oro-chiaro);
+}
+
+.tm-form-control::-webkit-input-placeholder { color: var(--arenaria); } /* Edge */
+.tm-form-control:-ms-input-placeholder { color: var(--arenaria); } /* Internet Explorer 10-11 */
+.tm-form-control::placeholder { color: var(--arenaria); }
 
 .tm-btn-primary {
-    color: #099;
-    background-color: white;
+    color: var(--notte);
+    background-color: var(--oro);
+    background-image: linear-gradient(180deg, var(--oro-chiaro), var(--oro));
     border: 0;
     padding: 12px 40px;
     font-size: 1.4rem;
     cursor: pointer;
-    transition: all 0.3s ease; 
+    box-shadow: inset 0 0 0 2px var(--bronzo);
+    transition: all 0.3s ease;
 }
 
 .tm-btn-primary:hover {
-    color: white;
-    background-color: #099;
+    color: var(--papiro);
+    background-color: var(--lapis);
+    background-image: none;
+    box-shadow: inset 0 0 0 2px var(--oro-chiaro);
 }
 
 .tm-align-right {
@@ -290,8 +418,7 @@ h2 { margin-top: 0; }
     margin-right: 0;
 }
 
-.tm-mb-30 { margin-bottom: 30px; }
-
+/* ---------- Responsive (invariato) ---------- */
 @media (max-width: 1130px) and (min-width: 992px) {
     .tm-left-inner { max-width: 380px; }
     .tm-site-name { font-size: 2.6rem; }
@@ -341,12 +468,12 @@ h2 { margin-top: 0; }
 
     .tm-list-item {
         flex-direction: column;
-        margin-top: 40px;     
+        margin-top: 40px;
     }
 
     .tm-list-item-img {
         margin-right: 0;
-        margin-bottom: 15px;        
+        margin-bottom: 15px;
     }
 
     .tm-drinks-nav { height: auto; }
