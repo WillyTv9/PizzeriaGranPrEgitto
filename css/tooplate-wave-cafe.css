@@ -51,8 +51,8 @@ body::before {
     z-index: -999;
     pointer-events: none;
     background:
-        radial-gradient(ellipse at 50% 0%, rgba(255, 214, 140, 0.15), transparent 60%),
-        linear-gradient(180deg, rgba(233, 196, 120, 0.10), rgba(110, 62, 22, 0.28));
+        radial-gradient(ellipse at 50% 0%, rgba(255, 214, 140, 0.35), transparent 60%),
+        linear-gradient(180deg, rgba(233, 196, 120, 0.30), rgba(110, 62, 22, 0.55));
 }
 
 ul {
@@ -88,7 +88,7 @@ h2 { margin-top: 0; }
     right: 0;
     bottom: 0;
     z-index: -1000;
-    filter: sepia(0.35) saturate(1.1) brightness(0.85);
+    filter: sepia(0.85) hue-rotate(-12deg) saturate(1.4) brightness(0.75) contrast(1.05);
 }
 
 .tm-video-wrapper { position: relative; }
@@ -136,6 +136,8 @@ h2 { margin-top: 0; }
     color: var(--bronzo);
     width: 100%;
     height: 160px;
+    box-sizing: border-box;
+    padding: 0 28px;     /* FIX: il logo non tocca più il bordo sinistro */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -150,11 +152,17 @@ h2 { margin-top: 0; }
 
 .tm-site-logo {
     margin-right: 30px;
-    color: var(--oro);
-    filter: drop-shadow(0 2px 2px rgba(122, 67, 27, 0.5));
+    height: 110px;       /* logo faraone: l'intestazione è alta 160px */
+    width: auto;
+    flex-shrink: 0;      /* FIX: nel flex il logo si comprimeva e finiva sul bordo sinistro */
+    filter: drop-shadow(0 3px 3px rgba(122, 67, 27, 0.55));
 }
 
 .tm-site-name {
+    flex: 1;             /* il titolo occupa lo spazio accanto al logo... */
+    min-width: 0;
+    margin: 0;
+    text-align: center;  /* ...e resta centrato in esso */
     font-size: 2.2rem;
     font-style: italic;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.6), 2px 3px 4px rgba(122, 67, 27, 0.35);
@@ -421,7 +429,7 @@ h2 { margin-top: 0; }
 /* ---------- Responsive (invariato) ---------- */
 @media (max-width: 1130px) and (min-width: 992px) {
     .tm-left-inner { max-width: 380px; }
-    .tm-site-name { font-size: 2.6rem; }
+    .tm-site-name { font-size: 1.7rem; } /* era 2.6rem: con il nome lungo usciva dall'intestazione */
     .tm-site-logo { margin-right: 20px; }
     .tm-page-link { width: 100%; }
     .tm-page-link-icon { margin-right: 15px; }
@@ -463,8 +471,8 @@ h2 { margin-top: 0; }
 }
 
 @media (max-width: 479px) {
-    .tm-site-name { font-size: 2.6rem; }
-    .tm-site-logo { margin-right: 20px; }
+    .tm-site-name { font-size: 1.6rem; } /* era 2.6rem: con il nome lungo usciva dall'intestazione */
+    .tm-site-logo { margin-right: 20px; height: 90px; }
 
     .tm-list-item {
         flex-direction: column;
